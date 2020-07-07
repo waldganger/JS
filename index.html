@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- titre de la page -->
+        <title>Apprentissage de HTML5</title>
+    </head>
+    <body>
+        <!-- Niveaux de titres : 6 -->
+        <h1>Titre 1</h1>
+        <h2>Titre 2</h2>
+        <h3>Titre 4</h3>
+        <h4>Titre 4</h4>
+        <h5>Titre 5</h5>
+        <h6>Titre 6</h6>
+
+        <!-- Paragraphes -->
+        <p>
+            Lorem ipsum dolor sit amet consectetur <strong>adipisicing elit</strong>. Eveniet nihil quibusdam distinctio unde dignissimos natus magni voluptas beatae error. Voluptate, iusto! Nam, ea! Obcaecati nobis quia a vel excepturi numquam.
+        </p>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. <em>Obcaecati molestiae</em> est <a href="https://qwant.com">delectus</a> distinctio cupiditate! Deleniti vel illo quo totam exercitationem.</p>
+        <br>    <!-- Retour à la ligne-->
+        <!-- Unorganized list -->
+        <ul>
+            <li>Basile</li>
+            <li>tondeuse</li>
+            <li>pelleteuse</li>
+        </ul>
+
+        <!-- Organized list -->
+        <ol>
+            <li>Apprendre HTML5</li>
+            <li>Apprendre CSS3</li>
+            <li>Apprendre Javascript</li>
+        </ol>
+
+        <!-- tableau -->
+        <table>
+            <thead>
+                <tr>language</tr>
+                <tr>maîtrise</tr>
+                <tr>année d'apprentissage</tr>
+            </thead>
+            <tbody>
+                <tr> <!-- Table Row -->
+                    <td>Python</td>     <!-- Table data -->
+                    <td>intermédiaire</td>
+                    <td>2018</td>
+                </tr>
+                <tr>
+                    <td>Common Lisp</td>
+                    <td>Débutant</td>
+                    <td>2019</td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td>intermédiaire</td>
+                    <td>2019</td>
+                </tr>
+                <tr>
+                    <td>C++</td>
+                    <td>débutant</td>
+                    <td>2020</td>
+                </tr>
+                <tr>
+                    <td>Rust</td>
+                    <td>intermédiaire</td>
+                    <td>2020</td>
+                </tr>
+                <tr>
+                    <td>Javascript</td>
+                    <td>débutant</td>
+                    <td>2020</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <hr>    <!-- Horizontal rule -->
+        <br>
+        
+        <!-- Forms -->
+        <form action="process.php" method="POST">   <!-- POST : securisé. GET : en clair dans l'URL -->
+            <div>
+                <label>Prénom</label>
+                <input type="text" name="prenom" placeholder="Entrez votre prénom ici">
+            </div>
+            <br>
+            <div>
+                <label>Nom</label>
+                <input type="text" name="nom">
+            </div>
+            <br>
+            <div>
+                <label>Email</label>
+                <input type="email" name="email">
+            </div>
+            <br>
+            <div>
+                <label>Message</label>
+                <textarea type="message"></textarea>
+            </div>
+            <br>
+            <div>
+                <label>Sexe</label>
+                <select name="gender">
+                    <option value="masculin">Masculin</option>
+                    <option value="féminin">Féminin</option>
+                </select>
+            </div>
+            <br>
+            <div>
+                <label>Age</label>
+                <input type="number" name="age" value="30">
+            </div>
+            <br>
+            <div>
+                <label>Date d'anniversaire</label>
+                <input type="date" name="anniversaire">
+            </div>
+            <br>
+            <div>
+                <input type="submit" name="submit" value="Submit">  
+                <!-- Valide l'envoi à process.php (form attribute)-->
+            </div>
+        </form>
+        <br>
+        <br>
+        <button click="someFunction">JS button</button>   
+        <br>
+        <br>
+        <!-- Images -->
+        <a href="images/tip.jpg">
+            <img src="images/tip.jpg" alt="image" width="200">
+        </a>
+        <br>
+        <h3>Quotations</h3>
+        <!-- Quotations -->
+
+        <blockquote cite="stallman.org">
+            I'd just like to interject for a moment.  What you're referring to as Linux,
+is in fact, GNU/Linux, or as I've recently taken to calling it, GNU plus Linux.
+Linux is not an operating system unto itself, but rather another free component
+of a fully functioning GNU system made useful by the GNU corelibs, shell
+utilities and vital system components comprising a full OS as defined by POSIX.
+
+Many computer users run a modified version of the GNU system every day,
+without realizing it.  Through a peculiar turn of events, the version of GNU
+which is widely used today is often called "Linux", and many of its users are
+not aware that it is basically the GNU system, developed by the GNU Project.
+
+There really is a Linux, and these people are using it, but it is just a
+part of the system they use.  Linux is the kernel: the program in the system
+that allocates the machine's resources to the other programs that you run.
+The kernel is an essential part of an operating system, but useless by itself;
+it can only function in the context of a complete operating system.  Linux is
+normally used in combination with the GNU operating system: the whole system
+is basically GNU with Linux added, or GNU/Linux.  All the so-called "Linux"
+distributions are really distributions of GNU/Linux.
+        </blockquote>
+
+        <p>The <abbr title="World Wide Web">WWW</abbr> is awesome !</p>
+        <br>
+        <p><cite>Moby Dick</cite> by Herman Melville</p>
+
+        <br>
+        <br>
+        <h3>Tags sémantiques</h3>
+        <p>Un élément sémantique décrit son contenu :</p>
+        <ul>
+            <li>au navigateur</li>
+            <li>au développeur</li>
+        </ul>
+        <img src="images/semantique.JPG">
+
+        <br>
+        <br>
+
+        <a href="blog.html" target="_blank">Exercice pratique : blog</a>
+
+        <br>
+        <br>
+
+    </body>
+</html>
