@@ -1,14 +1,217 @@
 'use strict'
 
-let start = new Date();
+let room = {
+  number: 23
+};
 
-for (let i = 0; i < 100000; i++) {
-  let doSomething = i * i * i;
-}
+let meetup = {
+  title: "Conference",
+  occupiedBy: [{name: "John"}, {name: "Alice"}],
+  place: room
+};
 
-let end = new Date();
+// circular references
+room.occupiedBy = meetup;
+meetup.self = meetup;
 
-console.log(end - start);
+console.log( JSON.stringify(meetup, function replacer(key, value) {
+  if (key != "" && value == meetup) return undefined ;
+  return value;
+}));
+
+// let user = {
+//   name: "John Smith",
+//   age: 35
+// };
+
+// let serialized = JSON.stringify(user);
+// let deserialize = JSON.parse(serialized);
+
+// console.log(serialized);
+// console.log(deserialize);
+
+// let str = '{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}';
+
+// let meetup = JSON.parse(str, function(key, value) {
+//   if (key == "date") return new Date(value);
+//   return value;
+// });
+
+// console.log(meetup.date.getDate());
+
+// let userData = '{ "name": "John", "age": 35, "isAdmin": false, "friends": [0,1,2,3] }';
+
+// let user = JSON.parse(userData);
+
+// console.log(user.name);
+
+// let room = {
+//   number: 23
+// };
+
+// let meetup = {
+//   title: "Conference",
+//   participants: [{name: "John"}, {name: "Alice"}],
+//   place: room // meetup references room
+// };
+
+// room.occupiedBy = meetup; // room references meetup
+
+// let json = JSON.stringify(meetup, function replacer(key, value) {
+//   // console.log(`${key}: ${value}`);
+//   return (key == 'occupiedBy') ? undefined : value;
+// }, 2);
+
+// let obj = JSON.parse(json);
+// console.log(obj);
+
+
+// let room = {
+//   number: 23
+// };
+
+// let meetup = {
+//   title: "Conference",
+//   participants: [{name: "John"}, {name: "Alice"}],
+//   place: room // meetup references room
+// };
+
+// room.occupiedBy = meetup; // room references meetup
+
+// console.log( JSON.stringify(meetup, ['title', 'participants', 'place', 'name', 'number']) );
+
+// let student = {
+//   name: 'John',
+//   age: 30,
+//   isAdmin: false,
+//   courses: ['html', 'css', 'js'],
+//   wife: null
+// };
+
+// let json = JSON.stringify(student);
+// console.log(json);
+
+// alert( formatDate(new Date(new Date - 1)) ); // "right now"
+
+// alert( formatDate(new Date(new Date - 30 * 1000)) ); // "30 sec. ago"
+
+// alert( formatDate(new Date(new Date - 5 * 60 * 1000)) ); // "5 min. ago"
+
+// // yesterday's date like 31.12.16 20:00
+// alert( formatDate(new Date(new Date - 86400 * 1000)) );
+
+// function formatDate(date){
+//   let now = Date.now();
+//   let difference = now - date;
+//   if (difference <= 1000) {
+//     console.log("Right now");
+//   } else if (difference <= 60000) {
+//     console.log(`${difference / 1000} sec. ago`);
+//   } else if (difference <= 60000 * 60) {
+//     console.log(`${difference / (60000)} min. ago`);
+//   } else {
+//     let yearsCropped = date.getFullYear().toString().slice(2,4);
+//     console.log(
+//       `${date.getDate()}.${date.getMonth()}.${yearsCropped} ${date.getHours()}:${date.getMinutes()}`
+//       );
+//   }
+// }
+
+// function getSecondsToTomorrow() {
+//   let date = new Date();
+//   return 3600 * 24 - (date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds());
+// }
+
+// console.log(getSecondsToTomorrow());
+
+// function getSecondsToday() {
+//   let date = new Date();
+//   return date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+// }
+
+// console.log(getSecondsToday());
+
+// let date = new Date(2015, 0, 2);
+
+// alert( getDateAgo(date, 1) ); // 1, (1 Jan 2015)
+// alert( getDateAgo(date, 2) ); // 31, (31 Dec 2014)
+// alert( getDateAgo(date, 365) ); // 2, (2 Jan 2014)
+
+// function getDateAgo(date, jours) {
+//   return new Date((date - ( jours * (24 * 3600 * 1000))));
+// }
+
+// function getLastDayOfMonth (year, month) {
+//   let date = new Date(year, month + 1, 0);
+//   return date.getDate();
+// }
+
+// console.log(getLastDayOfMonth(2012, 1));
+
+
+
+// let date = new Date(2012, 0, 3);  // 3 Jan 2012
+// alert( getWeekDay(date) );        // should output "TU"
+
+// function getWeekDay(date) {
+//   let semaine = new Map([
+//     [0, 'SU'],
+//     [1, 'MO'],
+//     [2, 'TU'],
+//     [3, 'WE'],
+//     [4, 'TH'],
+//     [5, 'FR'],
+//     [6, 'SA']
+//   ]);
+
+//   return semaine.get(date.getDay());
+// }
+
+// let date = new Date(2020, 1, 20, 3, 12);
+// console.log(date);
+
+// function diffSubtract(date1, date2) {
+//   return date2 - date1;
+// }
+
+// function diffGetTime(date1, date2) {
+//   return date2.getTime() - date1.getTime();
+// }
+
+// bench(diffSubtract);
+// bench(diffGetTime);
+
+// function bench(f) {
+//   let date1 = new Date(0);
+//   let date2 = new Date();
+//   let start = Date.now();
+
+//   for (let i = 0; i < 100000; i++) {
+//     f(date1, date2);
+//   }
+//   return Date.now() - start;
+// }
+
+// let time1 = 0;
+// let time2 = 0;
+
+// for (let i = 0; i < 10; i++) {
+//   time1 += bench(diffSubtract);
+//   time2 += bench(diffGetTime);
+// }
+
+// console.log(bench(diffSubtract) + ' ms');
+// console.log(bench(diffGetTime) + ' ms');
+
+// let start = new Date();
+
+// for (let i = 0; i < 100000; i++) {
+//   let doSomething = i * i * i;
+// }
+
+// let end = new Date();
+
+// console.log(end - start);
 
 // let date = new Date();
 
