@@ -40,13 +40,32 @@
 // console.log(rnth(arrayToList([10, 20, 30]), 1));
 
 function deepEqual(a, b){
-  if (typeof(a) == typeof(b) && a === b) {
-    return true;
+  if (typeof(a) != typeof(b)) return false;                 // pas les même types
+  if ((typeof(a) == "object" && typeof(b) == "object") &&   // même types -> test approfondi
+  Object.keys(a).length == Object.keys(b).length){          // objets de même longueur ?
+
+    // Mêmes clés ?
+     if (!(Object.keys(a).every((value, index) => value === Object.keys(b)[index]))){
+      return false;
+     }
+    // Mêmes valeurs ?
+     if (!(Object.values(a).every((value, index) => value === Object.values(b)[index]))){
+      return false;
+     }
+     
+       
+     
+
+    // for (let akey of Object.keys(a)){
+    //   for (let bkey of Object.keys(b)){
+    //     if (akey != bkey) return false;
+    //   }
+    // }
   }
-  return false;
+  return true;
 }
 
-console.log(deepEqual(2, 22));
+console.log(deepEqual({a: 2, b: 3}, {a: 2, b: 3}));
 
 // function reverseArray(array){
 //   let l = array.length - 1;
