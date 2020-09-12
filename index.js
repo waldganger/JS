@@ -1,5 +1,115 @@
 'use strict'
 
+
+
+
+// let array = [1, 2, 3, 4, 5];
+
+// function loop(n, test, update, body) {
+//   for(n; test(n) ; n = update(n) ){
+//     body(n);
+//   }
+// }
+
+// loop(3, n => n > 0, n => n - 1, console.log);
+
+// array.forEach(el => console.log(el * el));
+// array.map(el => console.log(el * el));
+
+// const { some } = require("./scripts");
+
+// function every(array, f){
+//   for (let el of array){
+//     if( !f(el)) return false;
+//   }
+//   return true;
+// }
+
+// function every(array, f){
+// return !array.some(el => !f(el));
+// }
+
+// console.log(every([1, 3, 5], n => n < 10));
+
+// console.log(every([2, 4, 16], n => n < 10));
+
+// console.log(every([], n => n < 10));
+
+
+// let arrays = [[1, 2, 3], [4, 5], [6]];
+
+// function flatten(array){
+//   return (array.reduce((flat, current) => flat.concat(current), []));
+
+// }
+
+// console.log(flatten(arrays));
+
+// const SCRIPTS = require('./scripts.js');
+
+// require('./scripts.js')
+
+// // function filter(array, test){
+// //   let passed = [];
+// //   for (let el of array){
+// //     if (test(el)){
+// //       passed.push(el);
+// //     }
+// //   }
+// //   return passed;
+// // }
+
+// console.log(SCRIPTS.filter(s => s.direction === 'ltr' && s.living == true)
+//   .map(s => s.name).sort((a, b) => a - b));
+
+// let array = [1, 2, 3, 4];
+// console.log(array.reduce((sum, current) => sum + current));
+
+
+// function characterCount(script){
+//   return script.ranges.reduce((sum, [debut, fin]) => sum + (fin - debut), 0);
+// }
+
+// console.log(characterCount(SCRIPTS[1]));
+
+// // qui a le plus grand nombre de caractères ?
+// console.log(typeof SCRIPTS.reduce((max, current) => 
+//   characterCount(max) > characterCount(current) ? max : current)
+//   );
+
+// function average(array){
+//   return array.reduce((sum, current) => sum + current, 0) / array.length;
+// }
+
+// console.log(average(array));
+
+// console.log(Math.round(average(SCRIPTS.filter(s => !s.living).map(s => s.year))));
+
+// // let roseDragon = "🌹🐉";
+// // for (let char of roseDragon){
+// //   console.log(char);
+// // }
+
+// function characterScript(code){
+//   for (let script of SCRIPTS){
+//     if (script.ranges.some(([from, to]) => 
+//     code >= from && code < to)){
+//       return script.name;
+//     }
+//   }
+//   return null;
+// }
+
+// console.log(characterScript(121));
+
+// function repeat(n, action){
+//   for(let i = 0; i < n; i++){
+//     action(i);
+//   }
+// }
+
+// repeat(5, (i) => console.log(i * i));
+
 // function arrayToList(array) {
 //   let list = null;
 //   for (let i = array.length - 1; i >= 0; i--) {
@@ -39,33 +149,23 @@
 // console.log(prepend(10, prepend(20, null)));
 // console.log(rnth(arrayToList([10, 20, 30]), 1));
 
-function deepEqual(a, b){
-  if (typeof(a) != typeof(b)) return false;                 // pas les même types
-  if ((typeof(a) == "object" && typeof(b) == "object") &&   // même types -> test approfondi
-  Object.keys(a).length == Object.keys(b).length){          // objets de même longueur ?
 
-    // Mêmes clés ?
-     if (!(Object.keys(a).every((value, index) => value === Object.keys(b)[index]))){
-      return false;
-     }
-    // Mêmes valeurs ?
-     if (!(Object.values(a).every((value, index) => value === Object.values(b)[index]))){
-      return false;
-     }
-     
-       
-     
+// function deepEqual(a, b) {
+//   if (a === b) return true;
+//   if (a == null || typeof a != "object" ||
+//   b == null || typeof b != "object") return false;
 
-    // for (let akey of Object.keys(a)){
-    //   for (let bkey of Object.keys(b)){
-    //     if (akey != bkey) return false;
-    //   }
-    // }
-  }
-  return true;
-}
+//   let keysA = Object.keys(a), keysB = Object.keys(b);
 
-console.log(deepEqual({a: 2, b: 3}, {a: 2, b: 3}));
+//   if (keysA.length != keysB.length) return false;
+
+//   for( let key of keysA) {
+//     if (!Object.keys(b).includes(key) || !deepEqual(a[key], b[key])) return false;
+//   }
+//   return true;
+// }
+
+// console.log(deepEqual({a: 2, b: 3, c: {a: 2, b: 3}}, {a: 2, b: 3, c: {a: 2, b: 4}}));
 
 // function reverseArray(array){
 //   let l = array.length - 1;
