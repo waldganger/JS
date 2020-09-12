@@ -31,21 +31,17 @@ function characterScript(code) {
 function dominantDirection(text){
   let scripts = countBy(text, char => {
     let script = characterScript(char.codePointAt(0));
-    // if (script != null) console.log(script.direction);
+
     return script ? script.direction : "none";
   }).filter(({direction}) => direction != "none");
 
   let total = scripts.reduce((sum, {count}) => sum + count, 0);
   if (total === 0) return "No scripts found";
 
-  // console.log(scripts);
+
   return scripts.reduce((a, b) => {
    return a > b ? a : b;
   }).direction;
-
-  // return scripts.map(({direction, count}) => {
-  //   return `${Math.round(count * 100 / total)}% ${direction}`;
-  // }).join(", ");
 }
 
 // console.log(dominantDirection('英国的狗说"woof", 俄罗斯的狗说"тяв"'));
