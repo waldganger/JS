@@ -1,53 +1,183 @@
 'use strict'
 
-const SCRIPTS = require('./scripts.js');
+class Group {
+  constructor(array = []){
+      this.group = array;
+  }
 
+  static from(iterable){
+    return new Group([...iterable])
+  }
 
-function countBy(items, groupName) {
-  let counts = [];
-  for (let item of items) {
-    let direction = groupName(item);
-    let known = counts.findIndex(c => c.direction == direction);
-    if (known == -1) {
-      counts.push({direction, count: 1});
-    } else {
-      counts[known].count++;
+  add(item) {
+      if (!this.has(item)) this.group.push(item);
+  }
+
+  delete(item) {
+    if (this.has(item)){
+      this.group.splice(this.group.indexOf(item), 1);
     }
   }
-  return counts;
-}
 
-function characterScript(code) {
-  for (let script of SCRIPTS) {
-    if (script.ranges.some(([from, to]) => {
-      return code >= from && code < to;
-    })) {
-      return script;
-    }
+  has(item){
+      return this.group.includes(item);
   }
-  return null;
+
 }
 
-function dominantDirection(text){
-  let scripts = countBy(text, char => {
-    let script = characterScript(char.codePointAt(0));
+let group = Group.from([10, 20]);
+console.log(group);
+console.log(group.has(10));
+// → true
+console.log(group.has(30));
+// → false
+group.add(10);
+group.delete(10);
+console.log(group.has(10));
+// → false
 
-    return script ? script.direction : "none";
-  }).filter(({direction}) => direction != "none");
+// let group = new Group();
+// group.add(10);
+// console.log(group.group);
+// group.add(20);
+// console.log(group.group);
+// group.delete(10);
+// console.log(group.group);
+// console.log(group);
 
-  let total = scripts.reduce((sum, {count}) => sum + count, 0);
-  if (total === 0) return "No scripts found";
+// let array = new Array();
+
+// for(let x = 0; x < 5; x++){
+//   array[x] = new Array();
+//   for(let y = 0; y < 6; y++){
+//     array[x][y] = 0;
+//   }
+// }
+
+// console.log(array);
 
 
-  return scripts.reduce((a, b) => {
-   return a > b ? a : b;
-  }).direction;
-}
+// class Matrix {
+//   constructor(width, height, element = (x, y) => 0) {
+//     this.width = width;
+//     this.height = height;
+//     this.content = new Array();
 
-// console.log(dominantDirection('英国的狗说"woof", 俄罗斯的狗说"тяв"'));
-console.log(dominantDirection("Hello!"));
+//     for(let x = 0; x < width; x++){
+//       this.content[x] = new Array();
+//       for(let y = 0; y < width; y++){
+//         this.content[x][y] = element(x, y);
+//       }
+//     }
+//   }
+//   get(x, y) {
+//   return this.content[x][y];
+// }
+//   set(x, y, value) {
+//     this.content[x][y] = value;
+//   }
+// }
 
-console.log(dominantDirection("Hey, مساء الخير"));
+// class Vec {
+//   constructor(x, y) {
+//     this.x = x;
+//     this.y = y;
+//     this.length = Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+//   }
+  
+//   plus(vector) {
+//     return new Vec(this.x + vector.x, this.y + vector.y)
+//   }
+//   minus(vector) {
+//     return new Vec(this.x - vector.x, this.y - vector.y)
+//   }
+  
+// }
+
+// console.log(new Vec(1, 2).plus(new Vec(2, 3)));
+// console.log(new Vec(1, 2).minus(new Vec(2, 3)));
+// console.log(new Vec(3, 4).length);
+
+
+
+
+// let array = new Matrix(10, 10);
+
+// array.set(5, 5, 100)
+
+// console.log(array);
+
+
+
+
+// let empty = {};
+
+// console.log(empty.toString);
+// console.log(Object.getPrototypeOf(empty));
+
+// console.log(Object.getPrototypeOf({}) === Object.prototype);
+// console.log(Object.getPrototypeOf(Math.max) === Function.prototype);
+// console.log(Object.getPrototypeOf([]) === Array.prototype);
+
+// let protorabbit = {
+//   speak(line) {
+//     console.log(`The ${this.type} rabbit says : ${line}`);
+//   }
+// }
+
+// let killerRabbit = Object.create(protorabbit);
+// killerRabbit.type = "killer";
+// killerRabbit.speak("RHEEEEEE");
+
+
+// const SCRIPTS = require('./scripts.js');
+
+
+// function countBy(items, groupName) {
+//   let counts = [];
+//   for (let item of items) {
+//     let direction = groupName(item);
+//     let known = counts.findIndex(c => c.direction == direction);
+//     if (known == -1) {
+//       counts.push({direction, count: 1});
+//     } else {
+//       counts[known].count++;
+//     }
+//   }
+//   return counts;
+// }
+
+// function characterScript(code) {
+//   for (let script of SCRIPTS) {
+//     if (script.ranges.some(([from, to]) => {
+//       return code >= from && code < to;
+//     })) {
+//       return script;
+//     }
+//   }
+//   return null;
+// }
+
+// function dominantDirection(text){
+//   let scripts = countBy(text, char => {
+//     let script = characterScript(char.codePointAt(0));
+
+//     return script ? script.direction : "none";
+//   }).filter(({direction}) => direction != "none");
+
+//   let total = scripts.reduce((sum, {count}) => sum + count, 0);
+//   if (total === 0) return "No scripts found";
+
+
+//   return scripts.reduce((a, b) => {
+//    return a > b ? a : b;
+//   }).direction;
+// }
+
+// // console.log(dominantDirection('英国的狗说"woof", 俄罗斯的狗说"тяв"'));
+// console.log(dominantDirection("Hello!"));
+
+// console.log(dominantDirection("Hey, مساء الخير"));
 
 
 // countBy(texte, dominantDir)
