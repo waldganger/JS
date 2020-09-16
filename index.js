@@ -3,6 +3,7 @@
 class Group {
   constructor(array = []){
       this.group = array;
+      this.i = 0;
   }
 
   static from(iterable){
@@ -23,18 +24,45 @@ class Group {
       return this.group.includes(item);
   }
 
+  [Symbol.iterator]() {
+    return new GroupIterator(this);
+  }
+
 }
 
-let group = Group.from([10, 20]);
-console.log(group);
-console.log(group.has(10));
-// → true
-console.log(group.has(30));
-// → false
-group.add(10);
-group.delete(10);
-console.log(group.has(10));
-// → false
+class GroupIterator {
+
+  constructor(group){
+    this.groupe = group;
+    this.index = 0;
+  }
+
+    next() {
+    if (this.index >= this.groupe.group.length) {
+      return {done: true};
+    } else {
+    let result = {value: this.groupe.group[this.index], done: false};
+    this.index++;
+    return result;
+    }
+  }
+
+}
+
+for (let value of Group.from(["a", "b", "c"])) {
+  console.log(value);
+}
+
+// let group = Group.from([10, 20]);
+// console.log(group);
+// console.log(group.has(10));
+// // → true
+// console.log(group.has(30));
+// // → false
+// group.add(10);
+// group.delete(10);
+// console.log(group.has(10));
+// // → false
 
 // let group = new Group();
 // group.add(10);
