@@ -1,6 +1,64 @@
 'use strict'
 
+// BUGS AND ERRORS
 
+class MultiplicatorUnitFailure extends Error {}
+
+function primitiveMultiply(a, b) {
+  if (Math.random() < 0.2) {
+    return a * b;
+  } else {
+    throw new MultiplicatorUnitFailure("Klunk");
+  }
+}
+
+function reliableMultiply(a, b) {
+  // Your code here.
+  try {
+    return primitiveMultiply(a, b);
+  } catch (e) {
+    if (e instanceof MultiplicatorUnitFailure) {
+      return reliableMultiply(a, b);
+    }
+  }
+}
+for (let i = 0; i < 50; i++){
+  // console.log(reliableMultiply(8, 8));
+  console.log(primitiveMultiply(8, 8));
+}
+
+// → 64
+
+// function firstElement(array) {
+//   if (array.length == 0) {
+//     throw new Error("firstElement called with []");
+//   }
+//   return array[0];
+// }
+
+// console.log(firstElement([]));
+
+// function promptNumber(question){
+//   let result = Number(prompt(question));
+//   if (Number.isNaN(result)) return null;
+//   else return result;
+// }
+
+// console.log(promptNumber("How old are you ?"));
+
+// function numberToString(n, base = 10) {
+//   let result = "", sign = "";
+//   if (n < 0) {
+//     sign = "-";
+//     n = -n;
+//   }
+//   do {
+//     result = String(n % base) + result;
+//     n  = Math.floor(n/base);
+//   } while (n > 0);
+//   return sign + result;
+// }
+// console.log(numberToString(13, 10));
 
 // class PGroup {
 //   constructor(members) {
