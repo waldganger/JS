@@ -1,57 +1,274 @@
 'use strict'
 
-class Group {
-  constructor(array = []){
-      this.group = array;
-      this.i = 0;
-  }
+const roads = [
+  "Alice's House-Bob's House",   "Alice's House-Cabin",
+  "Alice's House-Post Office",   "Bob's House-Town Hall",
+  "Daria's House-Ernie's House", "Daria's House-Town Hall",
+  "Ernie's House-Grete's House", "Grete's House-Farm",
+  "Grete's House-Shop",          "Marketplace-Farm",
+  "Marketplace-Post Office",     "Marketplace-Shop",
+  "Marketplace-Town Hall",       "Shop-Town Hall"
+];
 
-  static from(iterable){
-    return new Group([...iterable])
-  }
+// roads.forEach((i) => console.log(i));
 
-  add(item) {
-      if (!this.has(item)) this.group.push(item);
-  }
-
-  delete(item) {
-    if (this.has(item)){
-      this.group.splice(this.group.indexOf(item), 1);
-    }
-  }
-
-  has(item){
-      return this.group.includes(item);
-  }
-
-  [Symbol.iterator]() {
-    return new GroupIterator(this);
-  }
-
-}
-
-class GroupIterator {
-
-  constructor(group){
-    this.groupe = group;
-    this.index = 0;
-  }
-
-    next() {
-    if (this.index >= this.groupe.group.length) {
-      return {done: true};
+function buildGraph(edges){
+  let graph = Object.create(null);
+  function addEdge(from, to){
+    if(graph[from] == null) {
+      graph[from] = [to]; 
     } else {
-    let result = {value: this.groupe.group[this.index], done: false};
-    this.index++;
-    return result;
+      graph[from].push(to);
     }
   }
-
+  for (let [from, to] of edges.map((r) => r.split("-"))){
+    addEdge(from, to);
+    addEdge(to, from);
+  }
+  return graph;
 }
 
-for (let value of Group.from(["a", "b", "c"])) {
-  console.log(value);
+const roadGraph = buildGraph(roads);
+// console.log(roadGraph);
+
+
+class VillageState {
+  constructor(place, parcels) {
+    this.place = place;
+    this.parcels = parcels;
+  }
+
+  move(destination){
+    if (!roadGraph[this.place]) {
+      return this;
+    } else {
+      let parcels = this.parcels.map(p => {
+        if (p.place != this.place) return p;
+        return {place: destination, address: p.address};
+      }).filter((p) => p.place != p.address);
+      return new VillageState(destination, parcels);
+    }
+    
+  }
 }
+
+function runRobot(state, robot, memory){
+  for (let turn = 0;; turn++){
+    if(state.parcels.length === 0) {
+      console.log(`Done in ${turn} turns.`);
+      break;
+    }
+    let action = robot(state, memory);
+    state = state.move(action.direction);
+    memory = action.memory;
+    console.log(`Moved to ${action.direction}`);
+  }
+}
+
+function randomPick(array) {
+  let choice = Math.floor(Math.random() * array.length);
+  return array[choice];
+}
+
+function randomRobot(state){
+  return {direction: randomPick(roadGraph[state.place])};
+}
+
+VillageState.random = function(parcelCount = 5){
+  let parcels = [];
+  for (let i = 0; i < parcelCount; i++){
+    let address = randomPick(Object.keys(roadGraph));
+    let place ;
+    do {
+    place = randomPick(Object.keys(roadGraph));
+    } while (address == place);
+    parcels.push({place, address});
+  }
+  return new VillageState("Post Office", parcels)
+}
+
+const mailRoute = [
+  "Alice's House", "Cabin", "Alice's House", "Bob's House",
+  "Town Hall", "Daria's House", "Ernie's House",
+  "Grete's House", "Shop", "Grete's House", "Farm",
+  "Marketplace", "Post Office"
+];
+
+function routeRobot(state, memory) {
+  if (memory.length === 0){
+    memory = mailRoute;
+  }
+  return({direction: memory[0], memory: memory.slice(1)});
+}
+
+
+
+function findRoute(graph, from, to) {
+  let work = [{at: from, route: []}];
+  for (let i = 0; i < work.length; i++) {
+    let {at, route} = work[i];
+    for (let place of graph[at]) {
+      if (place == to) return route.concat(place);
+      if (!work.some(w => w.at == place)) {
+        work.push({at: place, route: route.concat(place)});
+        
+      }
+    }
+    // console.log(work);
+  }
+}
+
+function goalOrientedRobot({place, parcels}, route) {
+  if (route.length == 0) {
+    let parcel = parcels[0];
+    if (parcel.place != place) {
+      route = findRoute(roadGraph, place, parcel.place);
+    } else {
+      route = findRoute(roadGraph, place, parcel.address);
+    }
+  }
+  return {direction: route[0], memory: route.slice(1)};
+}
+
+function evalRobot(state, robot, memory){
+  for (let turn = 0;; turn++){
+    if(state.parcels.length === 0) {
+      // console.log(`Done in ${turn} turns.`);
+      return turn;
+    }
+    let action = robot(state, memory);
+    state = state.move(action.direction);
+    memory = action.memory;
+    // console.log(`Moved to ${action.direction}`);
+  }
+}
+
+function lazyRobot({place, parcels}, route) {
+  if (route.length == 0) {
+    // Describe a route for every parcel
+    let routes = parcels.map(parcel => {
+      if (parcel.place != place) {
+        return {route: findRoute(roadGraph, place, parcel.place),
+                pickUp: true};
+      } else {
+        return {route: findRoute(roadGraph, place, parcel.address),
+                pickUp: false};
+      }
+    });
+
+    // This determines the precedence a route gets when choosing.
+    // Route length counts negatively, routes that pick up a package
+    // get a small bonus.
+    function score({route, pickUp}) {
+      return (pickUp ? 0.5 : 0) - route.length;
+    }
+    route = routes.reduce((a, b) => score(a) > score(b) ? a : b).route;
+  }
+
+  return {direction: route[0], memory: route.slice(1)};
+}
+
+function bench(taskNumber, robotType1, robotType2 ){
+  let state = new VillageState.random(taskNumber);
+  let scoreBot1 = evalRobot(state, robotType1, []);
+  let scoreBot2 = evalRobot(state, robotType2, []);
+  console.log(`Robot of type ${robotType1.name} finished in ${scoreBot1} steps.`);
+  console.log(`Robot of type ${robotType2.name} finished in ${scoreBot2} steps.`);
+}
+
+bench(1000, lazyRobot, goalOrientedRobot);
+
+
+// let route = findRoute(roadGraph, "Cabin", "Farm")
+
+
+// let timeStamp = Date.now();
+// runRobot(VillageState.random(), randomRobot);
+// console.log((Date.now() - timeStamp) / 1000);
+
+
+
+
+// const first = new VillageState("Alice's House", 
+// [{place: "Post Office", address: "Marketplace"}]);
+
+// const second = first.move("Cabin");
+
+// console.log(second);
+
+
+// const lis = document.querySelectorAll('li');
+// lis.forEach((w) => console.log(w.innerText));
+// let arr = [];
+// lis.forEach((item) => arr.push(item.innerText))
+// console.log(arr);
+
+// console.log(window);
+
+// const ul = document.querySelectorAll('ul');
+
+// ul.forEach((item) => console.log(item));
+
+// let map = {one: true, two: true, hasOwnProperty: true};
+
+// // Fix this call
+//   console.log(Object.prototype.hasOwnProperty.call(map, "one"));
+// // console.log(Object.prototype.hasOwnProperty.call(this.map("one"));
+// console.log(Object.getPrototypeOf(map) == Object.prototype);
+// // → true
+
+// class Group {
+//   constructor(array = []){
+//       this.group = array;
+//       this.i = 0;
+//   }
+
+//   static from(iterable){
+//     return new Group([...iterable])
+//   }
+
+//   add(item) {
+//       if (!this.has(item)) this.group.push(item);
+//   }
+
+//   delete(item) {
+//     if (this.has(item)){
+//       this.group.splice(this.group.indexOf(item), 1);
+//     }
+//   }
+
+//   has(item){
+//       return this.group.includes(item);
+//   }
+
+//   [Symbol.iterator]() {
+//     return new GroupIterator(this);
+//   }
+
+// }
+
+// class GroupIterator {
+
+//   constructor(group){
+//     this.groupe = group;
+//     this.index = 0;
+//   }
+
+//     next() {
+//     if (this.index >= this.groupe.group.length) {
+//       return {done: true};
+//     } else {
+//     let result = {value: this.groupe.group[this.index], done: false};
+//     this.index++;
+//     return result;
+//     }
+//   }
+
+// }
+
+// for (let value of Group.from(["a", "b", "c"])) {
+//   console.log(value);
+// }
 
 // let group = Group.from([10, 20]);
 // console.log(group);
