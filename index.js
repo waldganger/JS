@@ -1,31 +1,192 @@
 'use strict'
 
+
+// import {json} from './sise.json';
+
+const json = require('./sise.json');
+
+console.log(Object.values(json).map(el => el.fields.effectif).reduce((sum, curr) => sum + curr, 0));
+// Object.values(json).forEach(el => console.log(el.fields.effectif));
+
+
+// REGEX
+
+
+// Fill in the regular expressions
+
+// Fill in the regular expressions
+
+// function evalCode(code){
+//   return eval(code);
+// }
+
+// console.log(evalCode("let a = [1, 2, 3, 4]; a.reduce((sum, curr) => sum + curr, 0);"));
+
+
+
+// let a = ["my car", "bad cats"];
+// a.forEach(element => console.log(/ca[rt]/.test(element)));
+
+
+// function verify(regexp, yes, no) {
+// // Ignore unfinished exercises
+// if (regexp.source == "...") return;
+// for (let str of yes) if (!regexp.test(str)) {
+// console.log(`Failure to match '${str}'`);
+// }
+// for (let str of no) if (regexp.test(str)) {
+// console.log(`Unexpected match for '${str}'`);
+// }
+// }
+
+// verify(/ca[rit]/,
+//        ["my car", "bad cats"],
+//        ["camper", "high art"]);
+
+// verify(/.../,
+//        ["pop culture", "mad props"],
+//        ["plop", "prrrop"]);
+
+// verify(/.../,
+//        ["ferret", "ferry", "ferrari"],
+//        ["ferrum", "transfer A"]);
+
+// verify(/.../,
+//        ["how delicious", "spacious room"],
+//        ["ruinous", "consciousness"]);
+
+// verify(/.../,
+//        ["bad punctuation ."],
+//        ["escape the period"]);
+
+// verify(/.../,
+//        ["Siebentausenddreihundertzweiundzwanzig"],
+//        ["no", "three small words"]);
+
+// verify(/.../,
+//        ["red platypus", "wobbling nest"],
+//        ["earth bed", "learning ape", "BEET"]);
+
+
+// function verify(regexp, yes, no) {
+//   // Ignore unfinished exercises
+//   if (regexp.source == "...") return;
+//   for (let str of yes) if (!regexp.test(str)) {
+//     console.log(`Failure to match '${str}'`);
+//   }
+//   for (let str of no) if (regexp.test(str)) {
+//     console.log(`Unexpected match for '${str}'`);
+//   }
+// }
+
+// verify(/ca[rt]/,
+//   ["my car", "bad cats"],
+//   ["camper", "high art"]);
+
+// verify(/.../,
+//   ["pop culture", "mad props"],
+//   ["plop", "prrrop"]);
+
+// verify(/.../,
+//   ["ferret", "ferry", "ferrari"],
+//   ["ferrum", "transfer A"]);
+
+// verify(/.../,
+//   ["how delicious", "spacious room"],
+//   ["ruinous", "consciousness"]);
+
+// verify(/.../,
+//   ["bad punctuation ."],
+//   ["escape the period"]);
+
+// verify(/.../,
+//   ["Siebentausenddreihundertzweiundzwanzig"],
+//   ["no", "three small words"]);
+
+// verify(/.../,
+//   ["red platypus", "wobbling nest"],
+//   ["earth bed", "learning ape", "BEET"]);
+
+
+
+
+// function getDate(string) {
+//   let [_, month, day, year] =
+//   /(\d{1,2})-(\d{1,2})-(\d{4})/.exec(string);
+//   return new Date(year, month - 1, day);
+// }
+
+// console.log(getDate("9-21-2020"));
+
+// console.log(new Date().getFullYear() - 2020);
+
+// console.log(/\d\d\d/.test("789"));
+
 // BUGS AND ERRORS
 
-class MultiplicatorUnitFailure extends Error {}
 
-function primitiveMultiply(a, b) {
-  if (Math.random() < 0.2) {
-    return a * b;
-  } else {
-    throw new MultiplicatorUnitFailure("Klunk");
-  }
-}
+// const box = {
+//   locked: true,
+//   unlock() { this.locked = false; },
+//   lock() { this.locked = true;  },
+//   _content: [],
+//   get content() {
+//     if (this.locked) throw new Error("Locked!");
+//     return this._content;
+//   }
+// };
 
-function reliableMultiply(a, b) {
-  // Your code here.
-  try {
-    return primitiveMultiply(a, b);
-  } catch (e) {
-    if (e instanceof MultiplicatorUnitFailure) {
-      return reliableMultiply(a, b);
-    }
-  }
-}
-for (let i = 0; i < 50; i++){
-  // console.log(reliableMultiply(8, 8));
-  console.log(primitiveMultiply(8, 8));
-}
+// function withBoxUnlocked(body) {
+//   try {
+//     if (box.locked) box.unlock();
+//     body();
+//   } catch (e) {
+//     return e;
+//   } finally {
+//     if (!box.locked) box.lock();
+//   }
+// }
+
+// withBoxUnlocked(function() {
+//   box.content.push("gold piece");
+// });
+
+// try {
+//   withBoxUnlocked(function() {
+//     throw new Error("Pirates on the horizon! Abort!");
+//   });
+// } catch (e) {
+//   console.log("Error raised: " + e);
+// }
+// console.log(box.locked);
+// → true
+
+// console.log(box._content);
+
+// class MultiplicatorUnitFailure extends Error {}
+
+// function primitiveMultiply(a, b) {
+//   if (Math.random() < 0.2) {
+//     return a * b;
+//   } else {
+//     throw new MultiplicatorUnitFailure("Klunk");
+//   }
+// }
+
+// function reliableMultiply(a, b) {
+//   // Your code here.
+//   try {
+//     return primitiveMultiply(a, b);
+//   } catch (e) {
+//     if (e instanceof MultiplicatorUnitFailure) {
+//       return reliableMultiply(a, b);
+//     }
+//   }
+// }
+// for (let i = 0; i < 50; i++){
+//   // console.log(reliableMultiply(8, 8));
+//   console.log(primitiveMultiply(8, 8));
+// }
 
 // → 64
 
