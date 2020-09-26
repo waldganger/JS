@@ -22,4 +22,15 @@ function disciplinesList(data){
     return set;
 }
 
-console.log(disciplinesList(json).has("Histoire"));
+function fteDiscipline(data, disc){
+    return Object.values(data).filter(el => el.fields.sect_disciplinaire_lib == disc)
+    .map(el => el.fields.effectif)
+    .reduce((sum, current) => sum + current, 0);
+}
+
+console.log( fteDiscipline(json, 'Informatique') );
+
+
+// Object.values(json).forEach(el => console.log(el));
+
+// console.log(disciplinesList(json).has("Histoire"));
