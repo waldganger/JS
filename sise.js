@@ -19,7 +19,7 @@ function fieldList(data){
 function disciplinesList(data){
     let set = new Set;
     Object.values(data).map(el => set.add(el.fields.sect_disciplinaire_lib));
-    return set;
+    return Array.from(set);
 }
 
 function fteDiscipline(data, disc){
@@ -28,9 +28,12 @@ function fteDiscipline(data, disc){
     .reduce((sum, current) => sum + current, 0);
 }
 
-console.log( fteDiscipline(json, 'Informatique') );
+
+
+// console.log( fteDiscipline(json, 'Informatique') );
+
 
 
 // Object.values(json).forEach(el => console.log(el));
 
-// console.log(disciplinesList(json).has("Histoire"));
+// console.log(disciplinesList(json));
