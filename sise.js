@@ -1,18 +1,20 @@
 const json = require('./sise.json');
 
+// import * as json from "file://C:/Users/antony/OneDrive -/programmation/apprentissage/JS/sise.json";
+
 // retourne les fte totaux
 function fte(data){
     return Object.values(data).map(el => el.fields.effectif).reduce((sum, curr) => sum + curr, 0);
 }
 
-function fieldList(data){
+function listeFields(data){
     let set = new Set();
     for(let el of Object.values(data)){
         for (let f of Object.keys(el.fields)){
             set.add(f);
         }
     }
-    return set;
+    return Array.from(set);
 }
 
 function listeDisciplines(data){
@@ -27,11 +29,13 @@ function listeSite(data) {
     return Array.from(set);
 }
 
-// faire la liste de toutes les proprietes
-// à la demande passer chaque propriété à une fn comme fteDiscipline pour obtenir les fte
-// afficher avec une fonction comme printFteByDiscipline
+function listeAllPropertiesValues(data){        
+    let resultat = {};
+    listeFields(data).map(prop => resultat[prop] = listePropertyValues(data, String(prop)));
+    return resultat;
+}
 
-function listeProperty(data, property){
+function listePropertyValues(data, property){
     let set = new Set;
     Object.values(data).map(el => set.add(el.fields[property]));
     return Array.from(set);
@@ -53,13 +57,14 @@ function printFteByDiscipline(data){
         }));
 }
 
-
 function totalFte(data){
     return listeDisciplines(data).map(disc => fteDiscipline(data, disc)).reduce((sum, current) => sum + current, 0);
 }
 
 // TESTS
-console.log(listeProperty(json, "com_ins_lib"));
+console.log(listeAllPropertiesValues(json));
+// console.log(listeFields(json));
+// console.log(listePropertyValues(json, "gd_disciscipline"));
 // console.log(listeSite(json));
 // printFteByDiscipline(json);
 // console.log(totalFte(json) === fte(json));
