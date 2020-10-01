@@ -7,6 +7,7 @@ const api = 'https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/sear
 // console.log(api === test);
 
 
+<<<<<<< HEAD
 const effectif = fetch(api)
 .then(response => response.json()
 .then(raw => Object.values(raw)[2].map(el => el.fields.effectif).reduce((sum, current) => sum + current, 0)))
@@ -21,3 +22,14 @@ const effectif = fetch(api)
 //     });
 
 // data.then( el => Object.values(el)[2].map( el => el.fields))
+=======
+
+const data = fetch(api)
+    .then(res => res.json())
+    .then((done) => {
+        console.log(done);
+        return done;
+    });
+
+// data.then( el => Object.values(el)[2].map( el => el.fields))
+>>>>>>> efc70fddaa3a2f563b818eca09dc2479a5b0797d
